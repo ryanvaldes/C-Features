@@ -1,47 +1,41 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-namespace asteroids
+
+namespace Asteroids
 {
     public class Movement : MonoBehaviour
     {
+        public float accelerate = 50f;
+        public float rotationSpeed = 360f;
 
+        private Rigidbody2D rigid;
 
-        public float rotationSpeed = 5f;
-        public float acceleration = 20f;
-
-
-        private Rigidbody2D rigid2D;
         // Use this for initialization
         void Start()
         {
-            // Get rigidBody 2d component
-            rigid2D = GetComponent<Rigidbody2D>();
+            rigid = GetComponent<Rigidbody2D>();
         }
 
-        // Update is called once per frame
-        void Update()
-
+        void Accelerate()
         {
-
-            Accelerate();
-            Rotate();
+            float inputV = Input.GetAxis("Vertical");
+            rigid.AddForce(transform.up * inputV * accelerate);
         }
 
         void Rotate()
         {
             float inputH = Input.GetAxis("Horizontal");
-            transform.Rotate(Vector3.forward, rotationSpeed * -inputH);
+            transform.Rotate(Vector3.back, rotationSpeed * inputH * Time.deltaTime);
         }
 
-        void Accelerate()
+        // Update is called once per frame
+        void Update()
         {
-            Vector2 up = transform.up;
-            float inputV = Input.GetAxis("Vertical");
-            rigid2D.AddForce(up * acceleration * inputV);
+            Accelerate();
+            Rotate();
         }
 
 
     }
 }
-    
